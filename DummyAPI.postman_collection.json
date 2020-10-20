@@ -1,0 +1,262 @@
+{
+	"info": {
+		"_postman_id": "e849f22f-30ca-4187-a10d-63f4d3f41bc3",
+		"name": "DummyAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create a employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a768fecc-a404-48bb-86f0-b57b54b823df",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"A sucessful message should be return\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Successfully! Record has been added.\");",
+							"    pm.globals.set(\"employeeId\", pm.response.json().data.id);",
+							"    ",
+							"    const bodyRaw = JSON.parse(pm.request.body.raw);",
+							"    pm.globals.set(\"employeeData\", JSON.stringify(bodyRaw));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"salary\": \"1000\",\n    \"age\": \"23\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}api{{version}}/create",
+					"host": [
+						"{{url}}api{{version}}"
+					],
+					"path": [
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a3f9bf75-298b-4e2c-8006-04a52eb4b388",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"A sucessful message should be return\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Successfully! Record has been fetched.\");",
+							"});",
+							"",
+							"pm.test(\"Employee data should be correct\", function () {",
+							"    const employeeData = pm.globals.get(\"employeeData\");",
+							"",
+							"    pm.expect(pm.response.json().data.name).to.eql(employeeData.name);",
+							"    pm.expect(pm.response.json().data.salary).to.eql(employeeData.salary);",
+							"    pm.expect(pm.response.json().data.age).to.eql(employeeData.age);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api{{version}}/employee/{{employeeId}}",
+					"host": [
+						"{{url}}api{{version}}"
+					],
+					"path": [
+						"employee",
+						"{{employeeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update a employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "548e4c37-e7dc-4e05-8fd5-0913dde1c6b6",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"A sucessful message should be return\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Successfully! Record has been updated.\");",
+							"    ",
+							"    const bodyRaw = JSON.parse(pm.request.body.raw);",
+							"    pm.globals.set(\"employeeData\", JSON.stringify(bodyRaw));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"{{$randomFullName}}\",\n    \"salary\": \"1500\",\n    \"age\": \"26\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}api{{version}}/update/{{employeeId}}",
+					"host": [
+						"{{url}}api{{version}}"
+					],
+					"path": [
+						"update",
+						"{{employeeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b4702522-5dfc-4721-ac1b-569b79ca1849",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"A sucessful message should be return\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Successfully! Record has been fetched.\");",
+							"});",
+							"",
+							"pm.test(\"Employee data should be updated\", function () {",
+							"    const employeeData = pm.globals.get(\"employeeData\");",
+							"    ",
+							"    pm.expect(pm.response.json().data.name).to.eql(employeeData.name);",
+							"    pm.expect(pm.response.json().data.salary).to.eql(employeeData.salary);",
+							"    pm.expect(pm.response.json().data.age).to.eql(employeeData.age);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api{{version}}/employee/{{employeeId}}",
+					"host": [
+						"{{url}}api{{version}}"
+					],
+					"path": [
+						"employee",
+						"{{employeeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0520bac6-47fd-4110-a9cb-0ea65ec8d033",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"A sucessful message should be return\", function () {",
+							"    pm.expect(pm.response.json().message).to.eql(\"Successfully! Record has been deleted\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api{{version}}/delete/{{employeeId}}",
+					"host": [
+						"{{url}}api{{version}}"
+					],
+					"path": [
+						"delete",
+						"{{employeeId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Try get a employee already deleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "26345f63-d858-4744-a978-906d8c704b37",
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}api{{version}}/employee/{{employeeId}}",
+					"host": [
+						"{{url}}api{{version}}"
+					],
+					"path": [
+						"employee",
+						"{{employeeId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
